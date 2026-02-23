@@ -1,0 +1,75 @@
+# Ignore operating system files
+DS_Store
+Thumbs.db
+ehthumbs.db
+# Ignore dependency directories
+node_modules/
+vendor/
+bower_components/
+# Ignore build directories
+build/
+dist/
+out/
+target/
+# Ignore environment and configuration files
+env
+env.local
+*.config
+*.local
+# Ignore IDE and editor files
+vscode/
+idea/
+*.sublime-project
+*.sublime-workspace
+# Ignore log and debug files
+*.log
+*.pid
+*.seed
+*.pid.lock
+# Ignore compiled files
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+*.pyo
+__pycache__/
+# Ignore packaged files
+*.jar
+*.war
+*.zip
+*.tar.gz
+*.7z
+# Ignore sensitive files
+*.pem
+*.key
+*.crt
+*.der
+# Ignore temporary files
+*.tmp
+*.swp
+*.bak
+*.old
+*.orig
+# Ignore Jupyter Notebook checkpoints
+ipynb_checkpoints/
+# Ignore Python virtual environments
+venv/
+env/
+ENV/
+venv/
+env.bak/
+venv.bak/
+# Ignore coverage and test artifacts
+coverage
+coverage.xml
+*.cover
+*.py,cover
+hypothesis/
+pytest_cache/
+# Ignore documentation build artifacts
+docs/_build/
+# Ignore macOS-specific files
+AppleDouble
+LSOverride
