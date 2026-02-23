@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require("helmet")
+const pkmnRoutes = require('./src/routes/pkmn.routes.js');
 
 const app = express();
 
@@ -12,11 +13,15 @@ app.use(helmet())
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+//Routes
+app.use('/api/pkmn', pkmnRoutes);
+
 // Connexion à MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/td')
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch((err) => console.log(err));
 
+//Route de base pour tester le serveur
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
