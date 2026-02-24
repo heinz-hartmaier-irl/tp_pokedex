@@ -1,0 +1,8 @@
+<h2>Login</h2>
+<form (submit)="login(); $event.preventDefault()">
+  <input type="email" [(ngModel)]="email" name="email" placeholder="Email" required />
+  <input type="password" [(ngModel)]="password" name="password" placeholder="Password" required />
+  <p *ngIf="error" style="color:red">{{ error }}</p>
+  <button type="submit">Login</button>
+</form>
+<a routerLink="/register">Créer un compte</a>

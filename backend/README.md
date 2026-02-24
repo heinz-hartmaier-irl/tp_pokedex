@@ -6,3 +6,4 @@ Application de Pokedex
 Node.js, avec le framework Express, et base de donnée MongoDb
 # Front : 
 Angular
+
