@@ -27,30 +27,35 @@ router.post(
 router.post(
   '/region',
   auth,
-  hasPermission(permissions.CAN_TAG_PKMN),
+  hasPermission(permissions.CAN_CREATE_PKMN),
+  //  (req, res, next) => {
+  // console.log("La route existe l'erreur 404 vient d'ailleurs");
+  // next();
+  // },
   pkmnController.addRegion
-);
-
-router.put(
-  '/',
-  auth,
-  hasPermission(permissions.CAN_CREATE_PKMN),
-  pkmnController.updatePokemon
-);
-
-router.delete(
-  '/',
-  auth,
-  hasPermission(permissions.CAN_CREATE_PKMN),
-  pkmnController.deletePokemon
 );
 
 router.delete(
   '/region',
   auth,
-  hasPermission(permissions.CAN_CREATE_PKMN),
+  hasPermission(permissions.CAN_DELETE_PKMN),
   pkmnController.deleteRegion
 );
+
+router.put(
+  '/:id',
+  auth,
+  hasPermission(permissions.CAN_EDIT_PKMN),
+  pkmnController.updatePokemon
+);
+
+router.delete(
+  '/:id',
+  auth,
+  hasPermission(permissions.CAN_DELETE_PKMN),
+  pkmnController.deletePokemon
+);
+
 
 //Route lié à l'utilisateur lui même donc permissions partagé ? pas encore très cohérent.
 router.post(

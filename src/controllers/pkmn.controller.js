@@ -110,14 +110,39 @@ const addRegion = async (req, res) => {
   }
 };
 
+const deleteRegion = async (req, res) => {
+  try {
+    const { pkmnID, regionName } = req.query;
+
+    const pokemon = await pokemonModel.findById(pkmnID);
+    if (!pokemon) {
+      return res.status(404).json({ message: "Pokémon non trouvé" });
+    }
+
+    pokemon.regions = pokemon.regions.filter(
+      r => r.regionName !== regionName
+    );
+
+    await pokemon.save();
+
+    res.status(204).send();
+
+  } catch (err) {
+    res.status(400).json({ message: "Erreur suppression région", error: err });
+  }
+};
+
 const updatePokemon = async (req, res) => {
   try {
-    const { id } = req.query;
+    const { id } = req.params;
 
     const pokemon = await pokemonModel.findByIdAndUpdate(
       id,
       req.body,
-      { new: true }
+      { 
+        new: true,
+        runValidators: true
+      }
     );
 
     if (!pokemon) {
@@ -142,28 +167,6 @@ try {
     res.status(200).send({ message: 'Pokémon supprimé', id: pokemon._id });
   } catch (err) {
     res.status(400).send(err);
-  }
-};
-
-const deleteRegion = async (req, res) => {
-  try {
-    const { pkmnID, regionName } = req.query;
-
-    const pokemon = await pokemonModel.findById(pkmnID);
-    if (!pokemon) {
-      return res.status(404).json({ message: "Pokémon non trouvé" });
-    }
-
-    pokemon.regions = pokemon.regions.filter(
-      r => r.regionName !== regionName
-    );
-
-    await pokemon.save();
-
-    res.status(204).send();
-
-  } catch (err) {
-    res.status(400).json({ message: "Erreur suppression région", error: err });
   }
 };
 
