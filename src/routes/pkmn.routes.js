@@ -6,13 +6,17 @@ const auth  = require('../middlewares/auth.middleware');
 const { hasPermission } = require('../middlewares/perm.middleware');
 const { permissions } = require('../config/permissions');
 
-//Pour les types
+
+//Obtenir tout les types (phase de test)
 router.get('/types', pkmnController.getTypes);
 
-//Consulter les pokemons, accessible à tous
+//Obtenir une liste de tout les pokemons
 router.get('/', pkmnController.getAll);
 
-//Routes reservé à un Admin
+//Recherche de X Pokemon (Authentification nécessaire)
+router.get('/search', auth, pkmnController.search);
+
+//Route Réserver à un Admin
 router.post(
   '/',
   auth,
@@ -20,7 +24,35 @@ router.post(
   pkmnController.createPokemon
 );
 
-//Routes accessible au User et à l'Admin
+router.post(
+  '/region',
+  auth,
+  hasPermission(permissions.CAN_TAG_PKMN),
+  pkmnController.addRegion
+);
+
+router.put(
+  '/',
+  auth,
+  hasPermission(permissions.CAN_CREATE_PKMN),
+  pkmnController.updatePokemon
+);
+
+router.delete(
+  '/',
+  auth,
+  hasPermission(permissions.CAN_CREATE_PKMN),
+  pkmnController.deletePokemon
+);
+
+router.delete(
+  '/region',
+  auth,
+  hasPermission(permissions.CAN_CREATE_PKMN),
+  pkmnController.deleteRegion
+);
+
+//Route lié à l'utilisateur lui même donc permissions partagé ? pas encore très cohérent.
 router.post(
   '/:id/tag',
   auth,
