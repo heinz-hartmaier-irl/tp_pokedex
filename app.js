@@ -4,6 +4,9 @@ const helmet = require("helmet")
 const pkmnRoutes = require('./src/routes/pkmn.routes.js');
 const authRouter = require('./src/routes/authRouter');
 const trainerRouter = require('./src/routes/trainer.routes.js')
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
 require('dotenv').config({ path: './props.env' });
 
 const app = express();
@@ -30,5 +33,38 @@ mongoose.connect('mongodb://127.0.0.1:27017/td')
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
+
+const options = {
+  definition: {
+    openapi: "3.1.0",
+    info: {
+      title: "MMI Express API with Swagger",
+      version: "0.1.0",
+      description: "TP de NodeJS. Apprentissage 05",
+      license: {
+        name: "MIT",
+        url: "https://spdx.org/licenses/MIT.html",
+      },
+      contact: {
+        name: "Author",
+        url: "https://google.com",
+        email: "info@email.com",
+      },
+    },
+    servers: [
+      {
+        url: "http://localhost:3000",
+      },
+    ],
+  },
+  apis: ["./src/routes/*.js"], 
+};
+
+const specs = swaggerJsdoc(options);
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(specs, { explorer: true })
+);
 
 module.exports = app;
