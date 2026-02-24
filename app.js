@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const helmet = require("helmet")
 const pkmnRoutes = require('./src/routes/pkmn.routes.js');
 const authRouter = require('./src/routes/authRouter');
+const trainerRouter = require('./src/routes/trainer.routes.js')
 require('dotenv').config({ path: './props.env' });
 
 const app = express();
@@ -18,7 +19,7 @@ app.use(express.json());
 //Routes
 app.use('/pkmn', pkmnRoutes);
 app.use('/auth', authRouter);
-
+app.use('/trainer', trainerRouter);
 
 // Connexion à MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/td')

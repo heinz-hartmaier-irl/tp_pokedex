@@ -13,8 +13,6 @@ const getTypes = (req, res) => {
   });
 };
 
-
-
 const getAll = (req, res) => {
   res.status(200).json({ data: [] });
 };
