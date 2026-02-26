@@ -7,7 +7,7 @@ import { Pokemon } from '../models/pokemon.model';
   providedIn: 'root',
 })
 export class PokemonService {
-  private apiUrl = 'http://localhost:3000/pokemon';
+  private apiUrl = 'http://localhost:3000/pkmn';
 
   constructor(private http: HttpClient) { }
 

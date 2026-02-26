@@ -18,9 +18,7 @@ import { App } from './app';
     HttpClientModule,
     RouterModule
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
-  ],
-  bootstrap: [App]
+  providers: [],
+  bootstrap: []
 })
 export class AppModule { }

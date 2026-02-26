@@ -13,8 +13,13 @@ const getTypes = (req, res) => {
   });
 };
 
-const getAll = (req, res) => {
-  res.status(200).json({ data: [] });
+const getAll = async (req, res) => {
+  try {
+    const pokemons = await pokemonModel.find();
+    res.status(200).json({ data: pokemons }); // le front lit data
+  } catch (err) {
+    res.status(500).json({ message: "Erreur serveur", error: err });
+  }
 };
 
 
@@ -137,7 +142,7 @@ const updatePokemon = async (req, res) => {
     const pokemon = await pokemonModel.findByIdAndUpdate(
       id,
       req.body,
-      { 
+      {
         new: true,
         runValidators: true
       }
@@ -159,7 +164,7 @@ const tagPokemon = (req, res) => {
 };
 
 const deletePokemon = async (req, res) => {
-try {
+  try {
     const pokemon = await pokemonModel.findByIdAndDelete(req.params.id);
     if (!pokemon) return res.status(404).send({ message: 'Pokémon non trouvé' });
     res.status(200).send({ message: 'Pokémon supprimé', id: pokemon._id });
