@@ -23,25 +23,49 @@ const pokemonSchema = new mongoose.Schema({
   types: {
     type: [String],
     required: true,
-    validate:[
-        {
+    validate: [
+      {
         validator: function (val) {
-            return val.length >= 1 && val.length <= 2;
+          return val.length >= 1 && val.length <= 2;
         },
         message: "Un Pokémon doit avoir 1 ou 2 types"
+      },
+      {
+        validator: function (val) {
+          return val.every(type => PkmnType.includes(type));
         },
-        {
-            validator : function (val){
-            return val.every(type => PkmnType.includes(type));
-            },
-            message: "Un ou plusieurs types sont invalides"
-        }
+        message: "Un ou plusieurs types sont invalides"
+      }
     ]
   },
 
   description: {
     type: String,
     required: true
+  },
+
+  category: {
+    type: String,
+    required: false
+  },
+
+  height: {
+    type: Number,
+    required: false
+  },
+
+  weight: {
+    type: Number,
+    required: false
+  },
+
+  stats: {
+    hp: { type: Number, default: 0 },
+    atk: { type: Number, default: 0 },
+    def: { type: Number, default: 0 },
+    spa: { type: Number, default: 0 },
+    spd: { type: Number, default: 0 },
+    spe: { type: Number, default: 0 }
   },
 
   regions: {
@@ -52,6 +76,11 @@ const pokemonSchema = new mongoose.Schema({
   imgUrl: {
     type: String,
     required: true
+  },
+
+  cryUrl: {
+    type: String,
+    required: false
   }
 
 }, { timestamps: true });

@@ -1,1 +1,70 @@
-<p>profile works!</p>
+<div class="profile-wrapper">
+    <div class="profile-container" *ngIf="trainer && !loading">
+
+        <!-- Trainer Info -->
+        <div class="trainer-card pk-glass animate-fade-in">
+            <img [src]="trainer.imgUrl || 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png'"
+                class="trainer-avatar" />
+            <div class="trainer-info">
+                <span class="trainer-id">#{{ trainer._id.slice(-6).toUpperCase() }}</span>
+                <h1>{{ trainer.trainerName }}</h1>
+                <p class="pk-font-outfit">Inscrit le {{ trainer.creationDate | date:'longDate' }}</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card pk-glass animate-fade-in" style="animation-delay: 100ms">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="var(--pk-blue)">
+                        <path
+                            d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <span class="label">Pokémon Vus</span>
+                    <span class="value">{{ trainer.pkmnSeen.length }}</span>
+                </div>
+            </div>
+
+            <div class="stat-card pk-glass animate-fade-in" style="animation-delay: 200ms">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24" fill="var(--pk-red)">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                </div>
+                <div class="stat-info">
+                    <span class="label">Pokémon Capturés</span>
+                    <span class="value">{{ trainer.pkmnCatch.length }}</span>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Admin Section -->
+        <div class="admin-section pk-glass animate-fade-in" *ngIf="isAdmin" style="animation-delay: 400ms">
+            <div class="admin-header">
+                <h2 class="pk-font-outfit">Administration</h2>
+                <button class="pk-btn pk-btn-secondary">Nouveau Pokémon</button>
+            </div>
+            <p style="color: var(--pk-text-muted); font-size: 0.875rem;">
+                En tant qu'administrateur, vous avez accès à la gestion de la base de données des Pokémon.
+            </p>
+        </div>
+
+
+    </div>
+
+    <!-- Loading State -->
+    <div class="profile-container" *ngIf="loading && !trainer">
+        <div class="loading-state pk-glass"
+            style="height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+            <div class="pk-spinner"></div>
+            <p style="margin-top: 1rem; color: var(--pk-text-muted);">Chargement du profil...</p>
+        </div>
+    </div>
+
+</div>

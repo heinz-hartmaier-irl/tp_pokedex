@@ -1,0 +1,115 @@
+.onboarding-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at top left, rgba(255, 28, 28, 0.1), transparent),
+        radial-gradient(circle at bottom right, rgba(0, 149, 255, 0.1), transparent);
+    padding: 2rem;
+}
+
+.onboarding-card {
+    width: 100%;
+    max-width: 600px;
+    padding: 3rem;
+    text-align: center;
+}
+
+.onboarding-card h2 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.onboarding-card p {
+    color: var(--pk-text-muted);
+    margin-bottom: 2.5rem;
+}
+
+.form-group {
+    text-align: left;
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--pk-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    margin-left: 0.25rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--pk-glass-border);
+    border-radius: 0.75rem;
+    color: white;
+    font-size: 1rem;
+}
+
+.avatar-selection {
+    text-align: left;
+    margin-bottom: 2.5rem;
+}
+
+.avatar-selection label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--pk-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+}
+
+.avatar-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1rem;
+}
+
+.avatar-item {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 1rem;
+    transition: all 0.2s ease;
+}
+
+.avatar-item img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.avatar-item.selected {
+    border-color: var(--pk-blue);
+    background: var(--pk-blue-glass);
+    box-shadow: var(--pk-glow-blue);
+    transform: scale(1.05);
+}
+
+.submit-btn {
+    width: 100%;
+    font-size: 1.125rem;
+    padding: 1rem;
+}
+
+.error-msg {
+    color: var(--pk-red);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    background: rgba(255, 28, 28, 0.1);
+    border-radius: 0.5rem;
+}
+
+@media (max-width: 600px) {
+    .avatar-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

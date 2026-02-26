@@ -3,6 +3,18 @@ export interface Pokemon {
     name: string;
     types: string[];
     description: string;
+    category?: string;
+    height?: number;
+    weight?: number;
+    stats?: {
+        hp: number;
+        atk: number;
+        def: number;
+        spa: number;
+        spd: number;
+        spe: number;
+    };
+    cryUrl?: string;
     regions: {
         regionName: string;
         regionPokedexNumber: number;

@@ -1,0 +1,32 @@
+<div class="onboarding-wrapper">
+    <div class="onboarding-card pk-glass animate-fade-in">
+        <h2>Bienvenue, Dresseur !</h2>
+        <p>Avant de commencer votre aventure, personnalisez votre profil.</p>
+
+        <form (submit)="onSubmit(); $event.preventDefault()">
+            <div class="form-group">
+                <label for="trainerName">Nom de dresseur</label>
+                <input type="text" id="trainerName" [(ngModel)]="trainerName" name="trainerName"
+                    placeholder="Entrez votre nom..." required />
+            </div>
+
+            <div class="avatar-selection">
+                <label>Choisissez votre avatar</label>
+                <div class="avatar-grid">
+                    <div *ngFor="let avatar of avatars" class="avatar-item pk-glass pk-card-hover"
+                        [class.selected]="selectedAvatar === avatar.url" (click)="selectAvatar(avatar.url)">
+                        <img [src]="avatar.url" [alt]="avatar.name" />
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="error" class="error-msg">
+                {{ error }}
+            </div>
+
+            <button type="submit" class="pk-btn pk-btn-primary submit-btn">
+                Commencer l'aventure
+            </button>
+        </form>
+    </div>
+</div>

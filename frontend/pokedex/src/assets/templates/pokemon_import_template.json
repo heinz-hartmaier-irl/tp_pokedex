@@ -1,0 +1,56 @@
+[
+    {
+        "name": "Bulbizarre",
+        "types": [
+            "PLANTE",
+            "POISON"
+        ],
+        "category": "Pokémon Graine",
+        "height": 0.7,
+        "weight": 6.9,
+        "description": "Il y a une graine sur son dos depuis sa naissance. Elle grossit avec lui.",
+        "imgUrl": "https://www.pokepedia.fr/images/thumb/e/ef/Bulbizarre-RFVF.png/250px-Bulbizarre-RFVF.png",
+        "cryUrl": "https://www.pokepedia.fr/images/4/41/Cri_0001_DP.ogg",
+        "stats": {
+            "hp": 45,
+            "atk": 49,
+            "def": 49,
+            "spa": 65,
+            "spd": 65,
+            "spe": 45
+        },
+        "regions": [
+            {
+                "regionName": "Kanto",
+                "regionPokedexNumber": 1
+            }
+        ]
+    },
+    {
+        "name": "Dracaufeu",
+        "types": [
+            "FEU",
+            "VOL"
+        ],
+        "category": "Pokémon Flamme",
+        "height": 1.7,
+        "weight": 90.5,
+        "description": "Il parcourt les cieux pour trouver des adversaires à sa mesure. Il crache des flammes si chaudes qu'elles peuvent faire fondre la roche.",
+        "imgUrl": "https://www.pokepedia.fr/images/thumb/1/17/Dracaufeu-RFVF.png/250px-Dracaufeu-RFVF.png",
+        "cryUrl": "https://www.pokepedia.fr/images/0/08/Cri_0006_DP.ogg",
+        "stats": {
+            "hp": 78,
+            "atk": 84,
+            "def": 78,
+            "spa": 109,
+            "spd": 85,
+            "spe": 100
+        },
+        "regions": [
+            {
+                "regionName": "Kanto",
+                "regionPokedexNumber": 6
+            }
+        ]
+    }
+]

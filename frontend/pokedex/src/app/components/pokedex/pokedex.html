@@ -1,28 +1,202 @@
-<p>pokedex works!</p>
-<div class="pokedex-container">
+<div class="pokedex-layout">
 
-    <div class="pokemon-grid">
-        <div class="pokemon-card" *ngFor="let pokemon of pokemons" (click)="selectPokemon(pokemon)">
-            <img [src]="pokemon.imgUrl" />
-            <p>{{ pokemon.name }}</p>
+    <!-- Left Column: Pokémon Grid -->
+    <div class="grid-container">
+        <div *ngIf="isLoading" class="loading-state">
+            <div class="pk-spinner"></div>
+            <p>Chargement en cours...</p>
         </div>
+
+        <div *ngIf="error && !isLoading" class="error-msg pk-glass">
+            {{ error }}
+        </div>
+
+        <div class="pk-grid" *ngIf="!isLoading && pokemons.length > 0">
+            <div class="pk-card pk-glass pk-card-hover animate-fade-in" *ngFor="let pokemon of pokemons"
+                (click)="selectPokemon(pokemon)" [class]="getTypeClass(pokemon)">
+                <div class="status-badge">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"
+                        class="pk-ball-icon" [class.captured]="isCaught(pokemon)" />
+                </div>
+                <img [src]="pokemon.imgUrl" [alt]="pokemon.name" [class.silhouette]="!isSeen(pokemon)" width="140"
+                    height="140" loading="lazy" />
+                <p>{{ isSeen(pokemon) ? pokemon.name : '???' }}</p>
+            </div>
+        </div>
+
+
+        <div class="empty-state" *ngIf="isInitialized && !isLoading && pokemons.length === 0 && !error">
+            <p>Aucun Pokémon trouvé dans la base de données.</p>
+        </div>
+
     </div>
 
-    <div class="pokemon-detail" *ngIf="selectedPokemon">
-        <h2>{{ selectedPokemon.name }}</h2>
-        <img [src]="selectedPokemon.imgUrl" />
+    <!-- Right Column: Detail Panel -->
+    <div class="detail-panel pk-glass animate-fade-in" *ngIf="selectedPokemon" [class]="getTypeClass(selectedPokemon)">
 
-        <p>{{ selectedPokemon.description }}</p>
-
-        <div class="types">
-            <span *ngFor="let type of selectedPokemon.types">
-                {{ type }}
-            </span>
+        <div class="detail-header">
+            <div class="detail-image-container">
+                <button class="seen-eye-toggle" [class.active]="isSeen(selectedPokemon)"
+                    (click)="toggleSeen(selectedPokemon)" title="Marquer comme vu">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
+                    </svg>
+                </button>
+                <img [src]="selectedPokemon.imgUrl" [alt]="selectedPokemon.name"
+                    [class.silhouette]="!isSeen(selectedPokemon)" width="180" height="180" />
+            </div>
+            <h2 class="pk-name">{{ isSeen(selectedPokemon) ? selectedPokemon.name : '???' }}</h2>
+            <div class="pk-types" *ngIf="isCaught(selectedPokemon)">
+                <span class="type-badge" *ngFor="let type of selectedPokemon.types">
+                    {{ type }}
+                </span>
+            </div>
         </div>
 
-        <button (click)="speak(selectedPokemon.description)">
-            🔊 Listen
-        </button>
+
+        <!-- Category, Height & Weight -->
+        <div class="pk-physical-traits animate-fade-in" *ngIf="isCaught(selectedPokemon)">
+            <div class="trait-badge">
+                <span class="trait-label">Taille</span>
+                <span class="trait-value">{{ selectedPokemon.height || '???' }} m</span>
+            </div>
+            <div class="trait-badge">
+                <span class="trait-label">Poids</span>
+                <span class="trait-value">{{ selectedPokemon.weight || '???' }} kg</span>
+            </div>
+            <div class="trait-badge category">
+                <span class="trait-label">Catégorie</span>
+                <span class="trait-value">{{ selectedPokemon.category || '???' }}</span>
+            </div>
+        </div>
+
+        <div class="pk-description" *ngIf="isCaught(selectedPokemon)">
+            {{ selectedPokemon.description }}
+        </div>
+
+        <!-- Base Stats Section -->
+        <div class="pk-stats-section animate-fade-in" *ngIf="isCaught(selectedPokemon) && selectedPokemon.stats">
+            <div class="section-divider"></div>
+            <h3 class="section-title">Statistiques de base</h3>
+            <div class="stats-grid">
+                <div class="stat-row">
+                    <span class="stat-label">PV</span>
+                    <span class="stat-value">{{ selectedPokemon.stats.hp }}</span>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill hp" [style.width.%]="(selectedPokemon.stats.hp / 255) * 100"></div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">ATK</span>
+                    <span class="stat-value">{{ selectedPokemon.stats.atk }}</span>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill atk" [style.width.%]="(selectedPokemon.stats.atk / 255) * 100"></div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">DEF</span>
+                    <span class="stat-value">{{ selectedPokemon.stats.def }}</span>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill def" [style.width.%]="(selectedPokemon.stats.def / 255) * 100"></div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">SPA</span>
+                    <span class="stat-value">{{ selectedPokemon.stats.spa }}</span>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill spa" [style.width.%]="(selectedPokemon.stats.spa / 255) * 100"></div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">SPD</span>
+                    <span class="stat-value">{{ selectedPokemon.stats.spd }}</span>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill spd" [style.width.%]="(selectedPokemon.stats.spd / 255) * 100"></div>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">VIT</span>
+                    <span class="stat-value">{{ selectedPokemon.stats.spe }}</span>
+                    <div class="stat-bar-bg">
+                        <div class="stat-bar-fill spe" [style.width.%]="(selectedPokemon.stats.spe / 255) * 100"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region Information -->
+        <div class="pk-regions animate-fade-in" *ngIf="isCaught(selectedPokemon) && selectedPokemon.regions.length">
+            <div class="section-divider"></div>
+            <h3 class="section-title">Localisation Régionale</h3>
+            <div class="region-badges">
+                <div class="region-badge" *ngFor="let reg of selectedPokemon.regions">
+                    <span class="reg-name">{{ reg.regionName }}</span>
+                    <span class="reg-num">#{{ reg.regionPokedexNumber }}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="pk-description locked" *ngIf="isSeen(selectedPokemon) && !isCaught(selectedPokemon)">
+            <p>????? </p>
+            <p> Capturez ce Pokémon pour en apprendre plus.</p>
+        </div>
+
+        <div class="pk-description locked" *ngIf="!isSeen(selectedPokemon)">
+            <p>????? </p>
+            <p> Pokémon inconnu. Approchez-vous pour l'identifier.</p>
+        </div>
+
+
+        <div class="detail-actions">
+            <div class="action-row">
+                <!-- Capture Button (Only if NOT caught) -->
+                <button *ngIf="!isCaught(selectedPokemon)" class="pk-btn pk-btn-primary pk-btn-icon"
+                    (click)="toggleCatch(selectedPokemon)">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                        <circle cx="12" cy="12" r="3" />
+                    </svg>
+                    Capturer
+                </button>
+
+                <!-- Cry Button (Only if caught) -->
+                <button *ngIf="isCaught(selectedPokemon)" class="pk-btn pk-btn-primary pk-btn-icon"
+                    (click)="playCry(selectedPokemon)" [disabled]="!selectedPokemon.cryUrl">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
+                    </svg>
+                    Écouter le cri
+                </button>
+
+                <!-- Description Audio Button -->
+                <button class="pk-btn pk-btn-secondary pk-btn-icon" (click)="speak(selectedPokemon.description)">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+                    </svg>
+                    Écouter
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Right Column: Empty State Placeholder -->
+    <div class="detail-panel pk-glass" *ngIf="!selectedPokemon">
+        <div class="empty-state animate-fade-in">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+                <circle cx="12" cy="12" r="5" />
+            </svg>
+            <h3>Sélectionnez un Pokémon</h3>
+            <p>Pour voir ses détails et l'ajouter à votre collection.</p>
+        </div>
     </div>
 
 </div>

@@ -13,6 +13,10 @@ export class TrainerService {
     return this.http.get<Trainer>(this.apiUrl);
   }
 
+  createTrainer(trainerName: string, imgUrl: string) {
+    return this.http.post<Trainer>(this.apiUrl, { trainerName, imgUrl });
+  }
+
   markPokemon(pkmnID: string, isCaptured: boolean) {
     return this.http.post(`${this.apiUrl}/mark`, {
       pkmnID,

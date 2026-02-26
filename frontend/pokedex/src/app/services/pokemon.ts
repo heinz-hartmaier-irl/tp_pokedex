@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Pokemon } from '../models/pokemon.model';
 
 @Injectable({
@@ -12,11 +12,15 @@ export class PokemonService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Pokemon[]> {
-    return this.http.get<Pokemon[]>(this.apiUrl);
+    return this.http.get<{ data: Pokemon[] }>(this.apiUrl).pipe(
+      map(res => res.data)
+    );
   }
 
   getById(id: string): Observable<Pokemon> {
-    return this.http.get<Pokemon>(`${this.apiUrl}/${id}`);
+    return this.http.get<{ data: Pokemon }>(`${this.apiUrl}/${id}`).pipe(
+      map(res => res.data)
+    );
   }
 
   create(pokemon: Pokemon): Observable<Pokemon> {

@@ -28,8 +28,10 @@ export class Auth {
 
   logout() {
     localStorage.removeItem('token');
+    sessionStorage.clear();
     this.router.navigate(['/login']);
   }
+
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
@@ -38,4 +40,16 @@ export class Auth {
   getToken(): string | null {
     return localStorage.getItem('token');
   }
+
+  getRole(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role;
+    } catch (e) {
+      return null;
+    }
+  }
 }
+

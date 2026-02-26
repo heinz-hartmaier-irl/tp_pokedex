@@ -15,9 +15,9 @@ const createTrainer = async (req, res) => {
     if (existingTrainer) return res.status(400).json({ message: "Trainer déjà créer pour cette utilisateur" });
 
     const trainer = await trainerModel.create({
-      username: user.username,         
-      trainerName: req.body.trainerName, 
-      imgUrl: req.body.imgUrl || "",    
+      username: user.username,
+      trainerName: req.body.trainerName,
+      imgUrl: req.body.imgUrl || "",
       creationDate: new Date(),
       pkmnSeen: [],
       pkmnCatch: []
@@ -104,7 +104,12 @@ const markPokemon = async (req, res) => {
     }
 
     await trainer.save();
-    res.status(200).json(trainer);
+    const populatedTrainer = await trainerModel.findById(trainer._id)
+      .populate('pkmnSeen', 'name imgUrl')
+      .populate('pkmnCatch', 'name imgUrl');
+
+    res.status(200).json(populatedTrainer);
+
   } catch (err) {
     res.status(500).json({ message: "Erreur ajout Pokémon", error: err });
   }
