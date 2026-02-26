@@ -1,5 +1,6 @@
 const app = require('./app');
 
+
 const mongoose = require("mongoose");
 require('dotenv').config({ path: './props.env' });
 
@@ -7,8 +8,8 @@ const port = 3000;
 
 //Connexion MongoDb
 mongoose.connect('mongodb://127.0.0.1:27017/td')
-.then(() => console.log('Connexion à MongoDB réussie !'))
-.catch((err) => console.log(err));
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch((err) => console.log(err));
 
 
 // ⚠️ Ne démarre pas le serveur pendant les tests

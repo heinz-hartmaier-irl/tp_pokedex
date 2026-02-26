@@ -1,1 +1,28 @@
 <p>pokedex works!</p>
+<div class="pokedex-container">
+
+    <div class="pokemon-grid">
+        <div class="pokemon-card" *ngFor="let pokemon of pokemons" (click)="selectPokemon(pokemon)">
+            <img [src]="pokemon.imgUrl" />
+            <p>{{ pokemon.name }}</p>
+        </div>
+    </div>
+
+    <div class="pokemon-detail" *ngIf="selectedPokemon">
+        <h2>{{ selectedPokemon.name }}</h2>
+        <img [src]="selectedPokemon.imgUrl" />
+
+        <p>{{ selectedPokemon.description }}</p>
+
+        <div class="types">
+            <span *ngFor="let type of selectedPokemon.types">
+                {{ type }}
+            </span>
+        </div>
+
+        <button (click)="speak(selectedPokemon.description)">
+            🔊 Listen
+        </button>
+    </div>
+
+</div>

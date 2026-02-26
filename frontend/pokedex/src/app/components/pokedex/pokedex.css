@@ -1,0 +1,28 @@
+.pokedex-container {
+    display: flex;
+    height: 100vh;
+}
+
+.pokemon-grid {
+    width: 70%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    overflow-y: scroll;
+}
+
+.pokemon-card {
+    cursor: pointer;
+    text-align: center;
+    background: #222;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.pokemon-detail {
+    width: 30%;
+    padding: 20px;
+    background: #111;
+    color: white;
+}

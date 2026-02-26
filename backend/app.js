@@ -7,10 +7,14 @@ const trainerRouter = require('./src/routes/trainer.routes.js')
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
 const apiRouter = require('./src/routes');
-
+const cors = require('cors');
+const app = express();
 require('dotenv').config({ path: './props.env' });
 
-const app = express();
+app.use(cors({
+  origin: 'http://localhost:4200',
+  credentials: true
+}));
 
 
 //protection des headers de l'app
@@ -62,7 +66,7 @@ const options = {
       },
     ],
   },
-  apis: ["./src/routes/*.js"], 
+  apis: ["./src/routes/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
