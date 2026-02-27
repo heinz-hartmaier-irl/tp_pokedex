@@ -3,8 +3,8 @@
     <!-- Left Column: Pokémon Grid -->
     <div class="grid-container">
         <div *ngIf="isLoading" class="loading-state">
-            <div class="pk-spinner"></div>
-            <p>Chargement en cours...</p>
+            <div class="pokeball-loader"></div>
+            <p class="loading-text">Démarrage du Pokédex...</p>
         </div>
 
         <div *ngIf="error && !isLoading" class="error-msg pk-glass">

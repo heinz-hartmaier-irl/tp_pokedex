@@ -10,7 +10,7 @@ describe("Trainer API", () => {
   beforeAll(async () => {
     // Register un ADMIN pour obtenir le token
     await request(app)
-      .post("/api/auth/register")
+      .post("/auth/register")
       .send({
         username: "TrainerAdmin",
         email: "trainer@test.com",
@@ -20,7 +20,7 @@ describe("Trainer API", () => {
 
     // Login pour récupérer le token
     const res = await request(app)
-      .post("/api/auth/login")
+      .post("/auth/login")
       .send({
         email: "trainer@test.com",
         password: "123456"
@@ -30,7 +30,7 @@ describe("Trainer API", () => {
 
     // Créer un Pokémon pour les tests
     const pokeRes = await request(app)
-      .post("/api/pkmn")
+      .post("/pkmn")
       .set("Authorization", `Bearer ${token}`)
       .send({
         name: "Venusaur",
@@ -44,7 +44,7 @@ describe("Trainer API", () => {
 
   it("should create a trainer", async () => {
     const res = await request(app)
-      .post("/api/trainer")
+      .post("/trainer")
       .set("Authorization", `Bearer ${token}`)
       .send({
         trainerName: "Ash Ketchum"
@@ -57,7 +57,7 @@ describe("Trainer API", () => {
 
   it("should get trainer info", async () => {
     const res = await request(app)
-      .get(`/api/trainer/${trainerId}`)
+      .get(`/trainer`)
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
@@ -66,7 +66,7 @@ describe("Trainer API", () => {
 
   it("should update trainer info", async () => {
     const res = await request(app)
-      .put(`/api/trainer/${trainerId}`)
+      .put(`/trainer`)
       .set("Authorization", `Bearer ${token}`)
       .send({ trainerName: "Ash K." });
 
@@ -76,10 +76,10 @@ describe("Trainer API", () => {
 
   it("should delete trainer", async () => {
     const res = await request(app)
-      .delete(`/api/trainer/${trainerId}`)
+      .delete(`/trainer`)
       .set("Authorization", `Bearer ${token}`);
 
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(204);
   });
 
 });

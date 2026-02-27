@@ -106,6 +106,10 @@
 }
 
 @media (max-width: 600px) {
+    .profile-wrapper {
+        padding: 90px 1rem 2rem;
+    }
+
     .trainer-card {
         flex-direction: column;
         text-align: center;

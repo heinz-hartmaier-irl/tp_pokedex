@@ -114,7 +114,6 @@ async function main() {
             const data = await getPokemonData(i, r.region);
             if (data) {
                 all.push(data);
-                // Fetch and add any Mega Evolutions for this base Pokémon
                 const megas = await getMegaEvolutions(i, r.region);
                 all.push(...megas);
             }

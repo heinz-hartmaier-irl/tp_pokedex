@@ -3,27 +3,54 @@
 :root {
   /* Color Palette - Premium PokéDex */
   --pk-red: #ff1c1c;
-  --pk-red-dark: #b30000;
+  --pk-red-dark: #cc0000;
+  --pk-yellow: #ffcb05;
+
+  /* Theme: Light (Technological) */
+  --pk-blue: #00d2ff;
+  --pk-blue-glass: rgba(0, 210, 255, 0.2);
+  --pk-bg: #e2e8f0;
+  --pk-card-bg: rgba(255, 255, 255, 0.85);
+  --pk-glass-border: rgba(255, 255, 255, 0.8);
+  --pk-text-main: #0f172a;
+  --pk-text-muted: #475569;
+
+  /* Gradients */
+  --pk-grad-red: linear-gradient(135deg, #ff1c1c 0%, #cc0000 100%);
+  --pk-grad-blue: linear-gradient(135deg, #00d2ff 0%, #0095ff 100%);
+  --pk-grad-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
+
+  /* Shadows */
+  --pk-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  --pk-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --pk-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+  --pk-glow-red: 0 0 15px rgba(255, 28, 28, 0.3);
+  --pk-glow-blue: 0 0 15px rgba(0, 210, 255, 0.4);
+
+  /* Pokeball Pattern Light */
+  --pk-pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%230f172a' stroke-width='6' stroke-opacity='0.05'/%3E%3Cpath d='M10 50h80M50 35a15 15 0 1 0 0 30 15 15 0 0 0 0-30z' stroke='%230f172a' stroke-width='6' stroke-opacity='0.05' fill='none'/%3E%3C/svg%3E");
+}
+
+[data-theme="dark"] {
+  /* Theme: Dark (Night Mode) */
   --pk-blue: #0095ff;
   --pk-blue-glass: rgba(0, 149, 255, 0.15);
-  --pk-yellow: #ffcb05;
-  --pk-dark-bg: #0f1218;
+  --pk-bg: #0f1218;
   --pk-card-bg: rgba(255, 255, 255, 0.1);
   --pk-glass-border: rgba(255, 255, 255, 0.18);
   --pk-text-main: #f8fafc;
   --pk-text-muted: #cbd5e1;
 
-  /* Gradients */
-  --pk-grad-red: linear-gradient(135deg, #ff1c1c 0%, #b30000 100%);
   --pk-grad-blue: linear-gradient(135deg, #0095ff 0%, #005a9c 100%);
   --pk-grad-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
 
-  /* Shadows */
   --pk-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --pk-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
   --pk-shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-  --pk-glow-red: 0 0 15px rgba(255, 28, 28, 0.4);
   --pk-glow-blue: 0 0 15px rgba(0, 149, 255, 0.4);
+
+  /* Pokeball Pattern Dark */
+  --pk-pattern-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='%23ffffff' stroke-width='6' stroke-opacity='0.05'/%3E%3Cpath d='M10 50h80M50 35a15 15 0 1 0 0 30 15 15 0 0 0 0-30z' stroke='%23ffffff' stroke-width='6' stroke-opacity='0.05' fill='none'/%3E%3C/svg%3E");
 }
 
 * {
@@ -33,7 +60,10 @@
 }
 
 body {
-  background-color: var(--pk-dark-bg);
+  background-color: var(--pk-bg);
+  background-image: var(--pk-pattern-url);
+  background-size: 100px 100px;
+  background-position: 0 0, 50px 50px;
   color: var(--pk-text-main);
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -65,7 +95,7 @@ h3,
 .pk-card-hover:hover {
   transform: translateY(-8px);
   box-shadow: var(--pk-shadow-lg);
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(0, 210, 255, 0.5);
 }
 
 .pk-btn {
@@ -114,4 +144,59 @@ h3,
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease forwards;
+}
+
+/* Pokéball Loading Animation */
+.pokeball-loader {
+  width: 60px;
+  height: 60px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+  border: 3px solid #333;
+  animation: rollLoading 1s linear infinite, bounceLoading 0.5s ease-in-out infinite alternate;
+}
+
+.pokeball-loader::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 30px;
+  background-color: var(--pk-red);
+  border-bottom: 4px solid #333;
+  top: -4px;
+}
+
+.pokeball-loader::before {
+  content: '';
+  position: absolute;
+  background-color: #fff;
+  width: 15px;
+  height: 15px;
+  border: 3px solid #333;
+  border-radius: 50%;
+  bottom: 18px;
+  right: 18px;
+  z-index: 1;
+}
+
+@keyframes rollLoading {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bounceLoading {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-10px);
+  }
 }

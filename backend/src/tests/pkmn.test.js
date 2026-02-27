@@ -9,24 +9,24 @@ describe("Pokemon API", () => {
   beforeAll(async () => {
     // Register un ADMIN
     await request(app)
-        .post("/auth/register")
-        .send({
-            username: "AdminUser",
-            email: "admin@test.com",
-            password: "123456",
-            role: "ADMIN"
-        });
+      .post("/auth/register")
+      .send({
+        username: "AdminUser",
+        email: "admin@test.com",
+        password: "123456",
+        role: "ADMIN"
+      });
 
     // Login pour récupérer le token
     const res = await request(app)
-        .post("/auth/login")
-        .send({
-            email: "admin@test.com",
-            password: "123456"
-        });
+      .post("/auth/login")
+      .send({
+        email: "admin@test.com",
+        password: "123456"
+      });
 
-        token = res.body.token;
-    });
+    token = res.body.token;
+  });
 
   // CREATE
   it("should create a pokemon", async () => {
@@ -54,8 +54,8 @@ describe("Pokemon API", () => {
       .set("Authorization", `Bearer ${token}`);
 
     expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body.length).toBeGreaterThanOrEqual(1);
+    expect(Array.isArray(res.body.data)).toBe(true);
+    expect(res.body.data.length).toBeGreaterThanOrEqual(1);
   });
 
   // UPDATE
