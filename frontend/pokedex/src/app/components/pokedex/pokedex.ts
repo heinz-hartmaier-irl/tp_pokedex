@@ -28,7 +28,6 @@ export class Pokedex implements OnInit {
   isInitialized = false;
   private loadingTimeout: any;
 
-  // Filter State
   searchQuery = '';
   selectedType = '';
   availableTypes = [
@@ -58,7 +57,6 @@ export class Pokedex implements OnInit {
     this.checkInitialLoadingState();
     this.loadData();
 
-    // Setup debounced search
     this.searchSubject.pipe(
       debounceTime(400),
       distinctUntilChanged()
@@ -95,7 +93,6 @@ export class Pokedex implements OnInit {
   }
 
   loadData() {
-    // Use search endpoint if any filter is present
     const pkmnObservable = (this.searchQuery || this.selectedType)
       ? this.pokemonService.search(this.selectedType, this.searchQuery)
       : this.pokemonService.getAll();
@@ -105,7 +102,6 @@ export class Pokedex implements OnInit {
       trainer: this.trainerService.getTrainer()
     }).subscribe({
       next: (result) => {
-        // Sort by regional pokedex number (first region in the list)
         this.pokemons = result.pokemons.sort((a, b) => {
           const numA = a.regions[0]?.regionPokedexNumber || 0;
           const numB = b.regions[0]?.regionPokedexNumber || 0;
@@ -113,7 +109,6 @@ export class Pokedex implements OnInit {
         });
         this.trainer = result.trainer;
 
-        // Update Caches
         sessionStorage.setItem('pkmn_cache', JSON.stringify(this.pokemons));
         sessionStorage.setItem('trainer_cache', JSON.stringify(this.trainer));
 
@@ -145,12 +140,12 @@ export class Pokedex implements OnInit {
     this.selectedPokemon = pokemon;
   }
 
+  closeDetailPanel() {
+    this.selectedPokemon = null;
+  }
+
   toggleSeen(pokemon: Pokemon) {
     const isSeen = this.isSeen(pokemon);
-    // Note: The backend markPokemon handles both seen/catch. 
-    // We pass isCaptured=false but the logic in marking might need check.
-    // However, based on existing markPokemon(pkmnID, isCaptured), 
-    // it adds to pkmnSeen if isCaptured is false.
     this.trainerService.markPokemon(pokemon._id, false)
       .subscribe(updatedTrainer => {
         this.trainer = updatedTrainer as Trainer;

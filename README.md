@@ -29,6 +29,7 @@ Créer une application de Pokedex, avec un affichage des pokemons, et la possibi
   - Ouvrir un terminal dans le dossier frontend
   - Lancer la commande : npm install
   - Lancer la commande : npm start
+  - Si vous êtes dans le cas où la commande ng n'est pas reconnue, vous devrez passer un wsl (ubuntu ) dans le dossier frontend et relancer la commande npm start
 - BDD : 
   - Décompressez l’archive MongoDB dans un espace accessible en écriture (comme le bureau)
   - Créez un dossier data dans le dossier MongoDB

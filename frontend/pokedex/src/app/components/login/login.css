@@ -48,7 +48,7 @@
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--pk-glass-border);
     border-radius: 0.75rem;
-    color: white;
+    color: rgb(34, 34, 34);
     font-family: inherit;
     transition: all 0.2s ease;
 }
@@ -91,5 +91,5 @@
 }
 
 .register-link:hover {
-    color: white;
+    color: rgb(255, 0, 0);
 }
