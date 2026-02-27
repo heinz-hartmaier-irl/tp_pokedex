@@ -5,7 +5,7 @@ import { Pokemon } from '../../models/pokemon.model';
 import { PokemonService } from '../../services/pokemon';
 import { TrainerService } from '../../services/trainer';
 import { Trainer } from '../../models/trainer.model';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-pokedex',
@@ -28,6 +28,16 @@ export class Pokedex implements OnInit {
   isInitialized = false;
   private loadingTimeout: any;
 
+  // Filter State
+  searchQuery = '';
+  selectedType = '';
+  availableTypes = [
+    "NORMAL", "FEU", "EAU", "PLANTE", "ELECTRIK", "GLACE",
+    "COMBAT", "POISON", "SOL", "VOL", "PSY", "INSECTE",
+    "ROCHE", "SPECTRE", "DRAGON", "TENEBRES", "ACIER", "FEE"
+  ];
+  private searchSubject = new Subject<string>();
+
   playCry(pokemon: Pokemon) {
     if (pokemon.cryUrl) {
       const audio = new Audio(pokemon.cryUrl);
@@ -46,6 +56,22 @@ export class Pokedex implements OnInit {
 
   ngOnInit() {
     this.checkInitialLoadingState();
+    this.loadData();
+
+    // Setup debounced search
+    this.searchSubject.pipe(
+      debounceTime(400),
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.loadData();
+    });
+  }
+
+  onSearchChange() {
+    this.searchSubject.next(this.searchQuery);
+  }
+
+  onTypeChange() {
     this.loadData();
   }
 
@@ -69,12 +95,22 @@ export class Pokedex implements OnInit {
   }
 
   loadData() {
+    // Use search endpoint if any filter is present
+    const pkmnObservable = (this.searchQuery || this.selectedType)
+      ? this.pokemonService.search(this.selectedType, this.searchQuery)
+      : this.pokemonService.getAll();
+
     forkJoin({
-      pokemons: this.pokemonService.getAll(),
+      pokemons: pkmnObservable,
       trainer: this.trainerService.getTrainer()
     }).subscribe({
       next: (result) => {
-        this.pokemons = result.pokemons;
+        // Sort by regional pokedex number (first region in the list)
+        this.pokemons = result.pokemons.sort((a, b) => {
+          const numA = a.regions[0]?.regionPokedexNumber || 0;
+          const numB = b.regions[0]?.regionPokedexNumber || 0;
+          return numA - numB;
+        });
         this.trainer = result.trainer;
 
         // Update Caches

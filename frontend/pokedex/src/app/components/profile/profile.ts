@@ -4,10 +4,12 @@ import { TrainerService } from '../../services/trainer';
 import { Auth } from '../../services/auth';
 import { Trainer } from '../../models/trainer.model';
 
+import { PkmnAdmin } from './pkmn-admin/pkmn-admin';
+
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PkmnAdmin],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
@@ -15,6 +17,7 @@ export class Profile implements OnInit {
   trainer: Trainer | null = null;
   loading = true;
   isAdmin = false;
+  showAdminPanel = false;
 
 
   constructor(

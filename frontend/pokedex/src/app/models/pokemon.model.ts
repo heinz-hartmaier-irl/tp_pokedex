@@ -15,6 +15,7 @@ export interface Pokemon {
         spe: number;
     };
     cryUrl?: string;
+    isLegendary?: boolean;
     regions: {
         regionName: string;
         regionPokedexNumber: number;

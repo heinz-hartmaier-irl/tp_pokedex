@@ -1,0 +1,163 @@
+<div class="admin-wrapper animate-fade-in">
+    <div class="admin-header">
+        <h3>Gestion de la Base de Données</h3>
+        <button class="pk-btn pk-btn-primary" (click)="openCreate()">+ Nouveau Pokémon</button>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="admin-toolbar">
+        <div class="search-box">
+            <input type="text" [(ngModel)]="searchQuery" (input)="onSearchInput()"
+                placeholder="Rechercher un Pokémon ou une région..." />
+        </div>
+        <div class="count-badge">
+            Page {{ currentPage }} / {{ totalPages }} ({{ filteredPokemons.length }} Pokémon)
+        </div>
+    </div>
+
+    <!-- Management List -->
+    <div class="admin-table-container pk-glass">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Num.</th>
+                    <th>Image</th>
+                    <th>Nom</th>
+                    <th>Types</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let p of paginatedPokemons">
+                    <td>#{{ p.regions[0]?.regionPokedexNumber }}</td>
+                    <td><img [src]="p.imgUrl" class="table-img" /></td>
+                    <td class="pk-font-outfit">{{ p.name }}</td>
+                    <td>
+                        <div class="table-types">
+                            <span *ngFor="let t of p.types" class="table-type-badge" [attr.data-type]="t">{{ t }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="icon-btn edit" (click)="openEdit(p)" title="Modifier">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                                </svg>
+                            </button>
+                            <button class="icon-btn delete" (click)="delete(p._id)" title="Supprimer">
+                                <svg viewBox="0 0 24 24">
+                                    <path
+                                        d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" />
+                                </svg>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-controls" *ngIf="totalPages > 1">
+            <button class="pk-btn pk-btn-secondary" [disabled]="currentPage === 1" (click)="setPage(currentPage - 1)">
+                Précédent
+            </button>
+            <div class="page-info">Page {{ currentPage }} sur {{ totalPages }}</div>
+            <button class="pk-btn pk-btn-secondary" [disabled]="currentPage === totalPages"
+                (click)="setPage(currentPage + 1)">
+                Suivant
+            </button>
+        </div>
+
+        <div *ngIf="loading" class="table-loading">
+            <div class="pk-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Modal Form overlay -->
+    <div class="modal-overlay" *ngIf="showForm" (click)="closeForm()">
+        <div class="admin-modal" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <h3>{{ isEditing ? 'Modifier' : 'Créer' }} Pokémon</h3>
+                <button class="close-btn" (click)="closeForm()">&times;</button>
+            </div>
+
+            <div class="modal-content">
+                <form #pkmnForm="ngForm" (ngSubmit)="save()">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Nom</label>
+                            <input type="text" [(ngModel)]="currentPkmn.name" name="name" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL</label>
+                            <input type="text" [(ngModel)]="currentPkmn.imgUrl" name="imgUrl" required />
+                        </div>
+                        <div class="form-group full">
+                            <label>Description</label>
+                            <textarea [(ngModel)]="currentPkmn.description" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Catégorie</label>
+                            <input type="text" [(ngModel)]="currentPkmn.category" name="category" />
+                        </div>
+                        <div class="form-group">
+                            <label>Légendaire</label>
+                            <div class="checkbox-wrapper">
+                                <input type="checkbox" [(ngModel)]="currentPkmn.isLegendary" name="isLegendary" />
+                                <span>Oui</span>
+                            </div>
+                        </div>
+
+                        <div class="form-divider">Physique & Stats</div>
+
+                        <div class="form-group">
+                            <label>Taille (m)</label>
+                            <input type="number" step="0.1" [(ngModel)]="currentPkmn.height" name="height" />
+                        </div>
+                        <div class="form-group">
+                            <label>Poids (kg)</label>
+                            <input type="number" step="0.1" [(ngModel)]="currentPkmn.weight" name="weight" />
+                        </div>
+
+                        <div class="form-group" *ngFor="let stat of ['hp','atk','def','spa','spd','spe']">
+                            <label>{{ stat | uppercase }}</label>
+                            <input type="number" [(ngModel)]="currentPkmn.stats[stat]" [name]="stat" />
+                        </div>
+
+                        <div class="form-divider">Régions & N° Pokédex</div>
+                        <div class="regions-list full">
+                            <div class="region-row" *ngFor="let reg of currentPkmn.regions; let i = index">
+                                <input type="text" [(ngModel)]="reg.regionName" [name]="'regName' + i"
+                                    placeholder="Région (ex: Kanto)" />
+                                <input type="number" [(ngModel)]="reg.regionPokedexNumber" [name]="'regNum' + i" />
+                                <button type="button" class="icon-btn delete" (click)="removeRegion(i)"
+                                    *ngIf="currentPkmn.regions.length > 1">
+                                    <svg viewBox="0 0 24 24">
+                                        <path d="M19 13H5v-2h14v2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <button type="button" class="pk-btn pk-btn-secondary add-region-btn" (click)="addRegion()">+
+                                Ajouter une région</button>
+                        </div>
+
+                        <div class="form-divider">Types (Max 2)</div>
+                        <div class="type-selector">
+                            <button type="button" *ngFor="let type of availableTypes" class="type-toggle-btn"
+                                [class.active]="currentPkmn.types.includes(type)" (click)="toggleType(type)">
+                                {{ type }}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="button" class="pk-btn pk-btn-secondary" (click)="closeForm()">Annuler</button>
+                        <button type="submit" class="pk-btn pk-btn-primary">{{ isEditing ? 'Mettre à jour' : 'Créer'
+                            }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

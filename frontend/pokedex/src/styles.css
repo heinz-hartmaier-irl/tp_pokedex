@@ -8,16 +8,16 @@
   --pk-blue-glass: rgba(0, 149, 255, 0.15);
   --pk-yellow: #ffcb05;
   --pk-dark-bg: #0f1218;
-  --pk-card-bg: rgba(255, 255, 255, 0.05);
-  --pk-glass-border: rgba(255, 255, 255, 0.1);
-  --pk-text-main: #f0f2f5;
-  --pk-text-muted: #94a3b8;
-  
+  --pk-card-bg: rgba(255, 255, 255, 0.1);
+  --pk-glass-border: rgba(255, 255, 255, 0.18);
+  --pk-text-main: #f8fafc;
+  --pk-text-muted: #cbd5e1;
+
   /* Gradients */
   --pk-grad-red: linear-gradient(135deg, #ff1c1c 0%, #b30000 100%);
   --pk-grad-blue: linear-gradient(135deg, #0095ff 0%, #005a9c 100%);
   --pk-grad-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
-  
+
   /* Shadows */
   --pk-shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
   --pk-shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
@@ -41,7 +41,10 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, .pk-font-outfit {
+h1,
+h2,
+h3,
+.pk-font-outfit {
   font-family: 'Outfit', sans-serif;
   letter-spacing: -0.02em;
 }
@@ -98,8 +101,15 @@ h1, h2, h3, .pk-font-outfit {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {

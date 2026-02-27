@@ -99,6 +99,8 @@ const markPokemon = async (req, res) => {
 
     if (isCaptured) {
       if (!trainer.pkmnCatch.includes(pkmnID)) trainer.pkmnCatch.push(pkmnID);
+      // Ensure captured also counts as seen
+      if (!trainer.pkmnSeen.includes(pkmnID)) trainer.pkmnSeen.push(pkmnID);
     } else {
       if (!trainer.pkmnSeen.includes(pkmnID)) trainer.pkmnSeen.push(pkmnID);
     }

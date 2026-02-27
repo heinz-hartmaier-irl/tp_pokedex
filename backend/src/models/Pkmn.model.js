@@ -81,6 +81,11 @@ const pokemonSchema = new mongoose.Schema({
   cryUrl: {
     type: String,
     required: false
+  },
+
+  isLegendary: {
+    type: Boolean,
+    default: false
   }
 
 }, { timestamps: true });

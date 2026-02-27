@@ -17,6 +17,16 @@ export class PokemonService {
     );
   }
 
+  search(typeOne?: string, partialName?: string): Observable<Pokemon[]> {
+    let params: any = { page: 1, size: 1000 }; // Fetch a large enough set for the UI
+    if (typeOne) params.typeOne = typeOne;
+    if (partialName) params.partialName = partialName;
+
+    return this.http.get<{ data: Pokemon[] }>(`${this.apiUrl}/search`, { params }).pipe(
+      map(res => res.data)
+    );
+  }
+
   getById(id: string): Observable<Pokemon> {
     return this.http.get<{ data: Pokemon }>(`${this.apiUrl}/${id}`).pipe(
       map(res => res.data)

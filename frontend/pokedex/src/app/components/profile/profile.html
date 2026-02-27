@@ -48,11 +48,16 @@
         <div class="admin-section pk-glass animate-fade-in" *ngIf="isAdmin" style="animation-delay: 400ms">
             <div class="admin-header">
                 <h2 class="pk-font-outfit">Administration</h2>
-                <button class="pk-btn pk-btn-secondary">Nouveau Pokémon</button>
+                <button class="pk-btn" [class.pk-btn-secondary]="!showAdminPanel"
+                    [class.pk-btn-primary]="showAdminPanel" (click)="showAdminPanel = !showAdminPanel">
+                    {{ showAdminPanel ? 'Fermer la gestion' : 'Gérer les Pokémon' }}
+                </button>
             </div>
-            <p style="color: var(--pk-text-muted); font-size: 0.875rem;">
+            <p style="color: var(--pk-text-muted); font-size: 0.875rem;" *ngIf="!showAdminPanel">
                 En tant qu'administrateur, vous avez accès à la gestion de la base de données des Pokémon.
             </p>
+
+            <app-pkmn-admin *ngIf="showAdminPanel"></app-pkmn-admin>
         </div>
 
 

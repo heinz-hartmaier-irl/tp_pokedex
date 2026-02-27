@@ -12,7 +12,7 @@ describe("Trainer API", () => {
     await request(app)
       .post("/api/auth/register")
       .send({
-        username: "TrainerAdmin",  // nécessaire pour l'auth mais pas dans Trainer
+        username: "TrainerAdmin",
         email: "trainer@test.com",
         password: "123456",
         role: "ADMIN"
@@ -47,7 +47,7 @@ describe("Trainer API", () => {
       .post("/api/trainer")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        trainerName: "Ash Ketchum" // seul champ obligatoire
+        trainerName: "Ash Ketchum"
       });
 
     expect(res.statusCode).toBe(201);
@@ -68,7 +68,7 @@ describe("Trainer API", () => {
     const res = await request(app)
       .put(`/api/trainer/${trainerId}`)
       .set("Authorization", `Bearer ${token}`)
-      .send({ trainerName: "Ash K." }); 
+      .send({ trainerName: "Ash K." });
 
     expect(res.statusCode).toBe(200);
     expect(res.body.trainerName).toBe("Ash K.");
