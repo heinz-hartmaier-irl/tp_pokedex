@@ -43,7 +43,7 @@ Créer une application de Pokedex, avec un affichage des pokemons, et la possibi
   - A la racine du projet se trouve des fichiers python / js / json qui sont un esnsemble qui permet d'aller chercher les données des pokemons sur l'api pokeapi et de les mettre au bon format pour la bdd MongoDB 
   - Cela risque de prendre du temps, afin de ne pas surcharger l'api pokeapi et éviter les erreurs
   - Il faut d'abord lancer le fichier python pour récupérer les données des pokemons : python fetch_pkmn_data.py 
-  - Ensuite, il faut lancer le fichier js pour importer les données dans la bdd MongoDB : node seed.js
+  - Ensuite, il faut lancer le fichier js pour importer les données dans la bdd MongoDB
   - Rendez vous dans le dossier backend et lancer le fichier seed.js : node seed.js
   - Toutes les données sont maintenant dans la bdd MongoDB et vous pouvez lancer l'application
   - Si vous désirer changer les données des pokemons récupérés, vous pouvez modifier le paramètre ranges dans le fichier fetch_pkmn_data.py et fetch_pkmn_data.js pour ensuite relancer les fichiers python et js 
